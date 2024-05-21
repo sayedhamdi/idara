@@ -28,7 +28,8 @@ const createBlog = (req,res)=>{
             return res.status(400).json({message:"verify blog content one or more elements are empty"})
         }
     }
-    let newBlog = {id:blogs.length +1 , ...req.body}
+    let date =  Date.now()
+    let newBlog = {id:blogs.length +1 , ...req.body,createdAt:date}
     blogs.push(newBlog);
     res.status(201).json(newBlog)
 }
@@ -87,7 +88,7 @@ const deleteBlogById = (req,res)=>{
 
 
     blogs.splice(blogIndex,1);
-    
+
     res.json(blogtoDelete)
 
 }

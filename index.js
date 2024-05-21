@@ -1,7 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const blogsRouter = require("./routes/blogs")
-
+const cors = require("cors");
 
 
 const app = express();
@@ -10,7 +10,7 @@ const app = express();
 //definition des middlewares
 app.use(express.json())
 app.use(morgan("dev"));
-
+app.use(cors("*"))
 
 
 //defintion des routes
