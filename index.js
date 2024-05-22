@@ -2,8 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 const blogsRouter = require("./routes/blogs")
 const cors = require("cors");
-
-
+const mongoose = require("mongoose")
 const app = express();
 
 
@@ -36,8 +35,22 @@ app.use("/blogs",blogsRouter)
 
 
 
+connectDb = async () => {
+  try {
+    await mongoose.connect('mongodb+srv://test:test@cluster0.lmoyc.mongodb.net/idara', {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    })
+    console.log("db connected")
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+
 
 
 app.listen(8000, () => {
+  connectDb()
   console.log("listening on port 8000 ! ");
 });

@@ -1,26 +1,9 @@
-let blogs = [
-    {
-      id: 1,
-      title: "How to createt web server",
-      createdAt: "20-05-2024",
-      author: "Ahmed moshen",
-      image : "https://miro.medium.com/v2/resize:fit:1200/1*y6C4nSvy2Woe0m7bWEn4BA.png",
-      content:"you should look at the documentation"
-    },
-    {
-      id: 2,
-      title: "How to createt react app",
-      createdAt: "20-05-2024",
-      author: "Ahmed moshen",
-      image : "https://miro.medium.com/v2/resize:fit:1200/1*y6C4nSvy2Woe0m7bWEn4BA.png",
-      content:"you should look at the documentation"
-    },
-  ];
+const blogSchema = require("../models/Blogs")
   
 
 
 
-const createBlog = (req,res)=>{
+const createBlog = async (req,res)=>{
     // verify that data passes through
     // validation
     for (const key of Object.keys(req.body)){
@@ -28,15 +11,26 @@ const createBlog = (req,res)=>{
             return res.status(400).json({message:"verify blog content one or more elements are empty"})
         }
     }
-    let date =  Date.now()
-    let newBlog = {id:blogs.length +1 , ...req.body,createdAt:date}
-    blogs.push(newBlog);
-    res.status(201).json(newBlog)
+    try{
+        let newBlog = await blogSchema.create(req.body)
+        res.status(201).json(newBlog)
+
+    }catch(e){
+        console.log(e)
+        res.status(500).json({message:"error while creating Blog"})
+    }
+    
 }
 
 
-const getAllBlogs = (req,res)=>{
-  res.status(200).json(blogs);
+const getAllBlogs = async (req,res)=>{
+    try{
+        let blogs = await blogSchema.find()
+        res.status(200).json(blogs);
+    }catch(e){
+        res.status(500).json({message:"error retrieving blogs"})
+    }
+
 }
 
 
